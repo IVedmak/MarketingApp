@@ -10,3 +10,12 @@ Please read [Bootiful Development with Spring Boot and Angular](http://developer
 To run the server, cd into the `server` folder and run `mvn spring-boot:run`.
 
 To run the client, cd into the `client` folder and run `npm install && ng serve`.
+
+
+
+
+token:
+
+
+
+EAALQ9KZAPjj4BACm7CGiIxlIi20IHppcPzdpShEuNfNdFnk2F4ndK2jVI2HUVWwBlbWdwa24XzzctS5BjBecVxBPfslP2X5vAVmbH3oHnMW4LAeInMsOX57WV825SpjRBXVwDgxVg4FRRjksfAici3J6IGXoZD
