@@ -1,16 +1,38 @@
-<mat-grid-list cols="3" rowHeight="500px" class="primary">
-  <mat-grid-tile *ngFor="let productItem of productItems">
-    <mat-card class="mat-primary" style="width: 88%;">
+<mat-toolbar class="mat-primary">
+  <span style="flex: 1 1 auto;text-align: center">Generate Product Feed based on your recent posts</span>
+  <mat-toolbar-row>
 
+    <span style="padding-right: 20px">Upload {{selectedProductsCount}} selected products to </span>
+    <mat-form-field style="width:300px" color="warn" style="padding-right: 20px">
+      <input matInput placeholder="Product Feed Name" [(ngModel)]="productFeed.feedName" ngDefaultControl>
+    </mat-form-field>
+
+    <button mat-raised-button color="primary" (click)="uploadProductFeed()" [disabled]="selectedProductsCount==0 || productFeed.feedName==''">Upload as feed</button>
+    <span style="flex: 1 1 auto;text-align: right">Total posts: {{productItems.length}}</span>
+  </mat-toolbar-row>
+
+</mat-toolbar>
+
+
+<div style="padding:5px;box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12);">
+  <mat-checkbox [(ngModel)]="allSelected" color="accent" (change)="selectAll()" style="padding:5px;">Select all</mat-checkbox>
+</div>
+
+<mat-grid-list cols="3" rowHeight="500px" class="mat-accent">
+  <mat-grid-tile *ngFor="let productItem of productItems; let ind =index">
+    <mat-card class="mat-accent" style="width: 88%;">
+      <mat-checkbox [(ngModel)]="selectedProducts[ind]" style="position:absolute;top:2px;left:2px;" (change)="changeProductSelection(ind)"></mat-checkbox>
       <mat-card-title class="mat-primary" style="width:100%">
-        <mat-form-field style="width:96%">
+
+        <mat-form-field style="width:90%">
           <input matInput [(ngModel)]="productItem.mName" placeholder="Product Title">
         </mat-form-field>
       </mat-card-title>
 
 
-      <mat-card-content class="mat-primary" style="width:100%">
-        <img mat-card-sm-image [src]="productItem.mImageUrl" alt="Product Image" (click)="openDialog(productItem.mImageUrl,productItem.mName)">
+      <mat-card-content class="mat-accent" style="width:100%">
+        <img mat-card-sm-image [src]="productItem.mImageUrl" alt="Product Image" (click)="openDialog(productItem.mImageUrl,productItem.mName)"
+          matTooltip="Click to enlarge!" matTooltipPosition="below">
         <mat-form-field style="width:80%">
           <textarea matInput style="height: 50px;width:96%" [(ngModel)]="productItem.mDescription" placeholder="Description"></textarea>
         </mat-form-field>
@@ -30,10 +52,10 @@
         <mat-form-field style="width:75%">
           <input matInput [(ngModel)]="productItem.mGoogleProductCategory" placeholder="Google Product Category">
         </mat-form-field>
-        
-          <a mat-raised-button color="primary"  href="{{productItem.mPostUrl}}" target="_blank">
-            <i class="fa fa-facebook"></i> Original post </a>
-        
+
+        <a mat-raised-button class="mat-primary" href="{{productItem.mPostUrl}}" target="_blank">
+          <i class="fa fa-facebook"></i> Original post </a>
+
       </mat-card-content>
 
 

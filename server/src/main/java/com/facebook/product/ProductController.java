@@ -3,10 +3,7 @@ package com.facebook.product;
 import facebook4j.Post;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -15,6 +12,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:4200")
 public class ProductController {
 
     private Logger logger = LoggerFactory.getLogger(ProductController.class);
@@ -54,6 +52,13 @@ public class ProductController {
     public boolean uploadProductFeed(@PathVariable String feedName) {
 
         return productService.uploadProductFeed(feedName);
+
+    }
+
+    @PostMapping("/uploadProductFeed/{feedName}")
+    @CrossOrigin(origins = "http://localhost:4200")
+    public boolean generateFeedFromProductItems(@PathVariable String feedName, @RequestBody List<ProductItem> productItems) {
+        return productService.uploadProductFeed(feedName, productItems);
 
     }
 

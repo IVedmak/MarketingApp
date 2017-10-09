@@ -129,6 +129,10 @@ public class ProductService implements InitializingBean {
     public String convertPostsToProductFeed(String feedName, List<Post> posts) {
 
         List<ProductItem> productItems = convertPostsToProductItems(posts);
+        return generateFeedFromProductItems(feedName, productItems);
+    }
+
+    public String generateFeedFromProductItems(String feedName, List<ProductItem> productItems) {
         String[] csvHeader = {"id", "title", "description", "link", "image_link", "condition", "availability", "price", "brand", "additional_image_link", "google_product_category"};
 
 
@@ -159,26 +163,41 @@ public class ProductService implements InitializingBean {
         try {
             String feedPath = convertPostsToProductFeed(feedName);
 
-            Business business = new Business(BUSINESS_ID, context);
-            ProductCatalog catalog = business.createProductCatalog()
-                    .setName("Product Catalog for " + feedName)
-                    .execute();
-            ;
-            ProductFeed feed = catalog.createProductFeed()
-                    .setName(feedName).setFileName(feedPath)
-                    .execute();
-
-            ProductFeedUpload upload = feed.createUpload()
-                    .addUploadFile("file", new File(feedPath))
-                    .execute();
-            APINodeList<ProductFeedUploadError> errors = upload.getErrors().execute();
-
-            return CollectionUtils.isEmpty(errors);
+            return createFeed(feedName, feedPath);
         } catch (Exception e) {
             logger.error("Error creating feed", e);
         }
 
         return false;
+    }
+
+    public boolean uploadProductFeed(String feedName, List<ProductItem> productItems) {
+        try {
+            return createFeed(feedName, generateFeedFromProductItems(feedName, productItems));
+        } catch (APIException e) {
+            logger.error("Couldn't upload product feed", e);
+        }
+
+        return false;
+
+    }
+
+    public boolean createFeed(String feedName, String feedPath) throws APIException {
+        Business business = new Business(BUSINESS_ID, context);
+        ProductCatalog catalog = business.createProductCatalog()
+                .setName("Product Catalog for " + feedName)
+                .execute();
+        ;
+        ProductFeed feed = catalog.createProductFeed()
+                .setName(feedName).setFileName(feedPath)
+                .execute();
+
+        ProductFeedUpload upload = feed.createUpload()
+                .addUploadFile("file", new File(feedPath))
+                .execute();
+        APINodeList<ProductFeedUploadError> errors = upload.getErrors().execute();
+
+        return CollectionUtils.isEmpty(errors);
     }
 
 
