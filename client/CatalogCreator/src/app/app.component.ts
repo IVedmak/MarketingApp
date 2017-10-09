@@ -15,7 +15,7 @@ export class ProdectFeed {
 })
 export class AppComponent {
   title = 'app';
-  productItems: ProductItem[];
+  productItems: ProductItem[] = [];
   productFeed: ProdectFeed = { feedName: "" };
   selectedProducts: boolean[] = [];
   selectedProductsCount: number = 0;
@@ -24,9 +24,14 @@ export class AppComponent {
 
   }
 
+  
   selectAll(): void {
     for (var i = 0; i < this.selectedProducts.length; i++) {
       this.selectedProducts[i] = this.allSelected;
+    }
+
+    if(this.allSelected){
+      this.selectedProductsCount = this.selectedProducts.length;
     }
 
   }
