@@ -1,0 +1,45 @@
+<mat-grid-list cols="3" rowHeight="500px" class="primary">
+  <mat-grid-tile *ngFor="let productItem of productItems">
+    <mat-card class="mat-primary" style="width: 88%;">
+
+      <mat-card-title class="mat-primary" style="width:100%">
+        <mat-form-field style="width:96%">
+          <input matInput [(ngModel)]="productItem.mName" placeholder="Product Title">
+        </mat-form-field>
+      </mat-card-title>
+
+
+      <mat-card-content class="mat-primary" style="width:100%">
+        <img mat-card-sm-image [src]="productItem.mImageUrl" alt="Product Image" (click)="openDialog(productItem.mImageUrl,productItem.mName)">
+        <mat-form-field style="width:80%">
+          <textarea matInput style="height: 50px;width:96%" [(ngModel)]="productItem.mDescription" placeholder="Description"></textarea>
+        </mat-form-field>
+        <mat-form-field style="width:48%">
+          <input matInput [(ngModel)]="productItem.mPrice" placeholder="Price">
+
+        </mat-form-field>
+        <mat-form-field style="width:48%">
+          <input matInput [(ngModel)]="productItem.mBrand" placeholder="Brand">
+        </mat-form-field>
+        <mat-form-field style="width:18%">
+          <input matInput [(ngModel)]="productItem.mCondition" placeholder="Condition">
+        </mat-form-field>
+        <mat-form-field style="width:78%">
+          <input matInput [(ngModel)]="productItem.mUrl" placeholder="Link">
+        </mat-form-field>
+        <mat-form-field style="width:75%">
+          <input matInput [(ngModel)]="productItem.mGoogleProductCategory" placeholder="Google Product Category">
+        </mat-form-field>
+        
+          <a mat-raised-button color="primary"  href="{{productItem.mPostUrl}}" target="_blank">
+            <i class="fa fa-facebook"></i> Original post </a>
+        
+      </mat-card-content>
+
+
+
+    </mat-card>
+
+
+  </mat-grid-tile>
+</mat-grid-list>

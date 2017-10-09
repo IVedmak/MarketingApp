@@ -26,6 +26,35 @@
     </properties>
 
     <dependencies>
+        <!--Facebook begin-->
+        <dependency>
+            <groupId>facebook</groupId>
+            <artifactId>facebook-java-ads-sdk</artifactId>
+            <version>2.9.0</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/lib/facebook-java-ads-sdk-2.9.0.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.5</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/lib/gson-2.5.jar</systemPath>
+        </dependency>
+
+        <dependency>
+            <groupId>org.facebook4j</groupId>
+            <artifactId>facebook4j-core</artifactId>
+            <version>2.4.10</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/com.opencsv/opencsv -->
+        <dependency>
+            <groupId>com.opencsv</groupId>
+            <artifactId>opencsv</artifactId>
+            <version>4.0</version>
+        </dependency>
+
+        <!--Facebook end-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
@@ -55,21 +84,63 @@
         </dependency>
     </dependencies>
 
-    <build>
-        <defaultGoal>spring-boot:run</defaultGoal>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-			<!-- START plugin -->
-      <plugin>
-        <groupId>com.google.cloud.tools</groupId>
-        <artifactId>appengine-maven-plugin</artifactId>
-        <version>${appengine.maven.plugin}</version>
-      </plugin>
-<!-- END plugin -->
-        </plugins>
-    </build>
+    <profiles>
+        <profile>
+            <id>devel</id>
+            <activation>
+                <property>
+                    <name>debug</name>
+                </property>
+            </activation>
+            <build>
+                <defaultGoal>spring-boot:run</defaultGoal>
+                <plugins>
+                    <plugin>
+                        <groupId>org.springframework.boot</groupId>
+                        <artifactId>spring-boot-maven-plugin</artifactId>
+                        <configuration>
+                            <jvmArguments>
+                                -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005
+                            </jvmArguments>
+                        </configuration>
+                    </plugin>
+                    <!-- START plugin -->
+                    <plugin>
+                        <groupId>com.google.cloud.tools</groupId>
+                        <artifactId>appengine-maven-plugin</artifactId>
+                        <version>${appengine.maven.plugin}</version>
+                    </plugin>
+                    <!-- END plugin -->
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>normal</id>
+            <activation>
+                <property>
+                    <name>debug</name>
+                    <value>!true</value>
+                </property>
+            </activation>
+            <build>
+                <defaultGoal>spring-boot:run</defaultGoal>
+                <plugins>
+                    <plugin>
+                        <groupId>org.springframework.boot</groupId>
+                        <artifactId>spring-boot-maven-plugin</artifactId>
+
+                    </plugin>
+                    <!-- START plugin -->
+                    <plugin>
+                        <groupId>com.google.cloud.tools</groupId>
+                        <artifactId>appengine-maven-plugin</artifactId>
+                        <version>${appengine.maven.plugin}</version>
+                    </plugin>
+                    <!-- END plugin -->
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
 
 </project>
